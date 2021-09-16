@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<hr>
+<form th:action="@{/logout}" method="GET">
+    <input type="submit" value="Logout"/>
+</form>
+<tbody>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Password</th>
+        <th>FirstName</th>
+        <th>Age</th>
+        <th>Roles</th>
+        <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+        <th>Edit</th>
+        <th>Delete</th>
+        </div>
+    </tr>
+    </thead>
+    <tr th:each="user : ${userList}">
+        <td th:text="${user.username}"/>
+        <td th:text="${user.password}"/>
+        <td th:text="${user.firstName}"/>
+        <td th:text="${user.age}"/>
+        <td th:text="${user.roles}"/>
+        <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+        <td><a th:href="@{admin/updateUser/{id}(id=${user.id})}">Edit</a></td>
+        <td><a th:href="@{admin/deleteUser/{id}(id=${user.id})}">Delete</a></td>
+        </div>
+    </tr>
+</table>
+<div sec:authorize="hasAuthority('ROLE_ADMIN')">
+<p><a href="admin/createUserAddForm">Create user</a></p>
+</div>
+</body>
+</html>
